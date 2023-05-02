@@ -31,11 +31,24 @@ module.exports = function ({zwiftID, pollingInterval}) {
                 }
             });
             const data = response.data.positions[0] || {};
-            subject.next({
-                power: data.powerOutput,
-                speed: data.speedInMillimetersPerHour / (1000 * 1000), // to kmh
-                hr: data.heartRateInBpm,
-            })
+            // Turn on logging if needed
+            // console.log(data)
+
+            // We need to check if the Zwift ID in data matches our own
+            if (data.id == zwiftID) {
+                subject.next({
+                    power: data.powerOutput,
+                    speed: data.speedInMillimetersPerHour / (1000 * 1000), // to kmh
+                    hr: data.heartRateInBpm,
+                })
+            }
+            else {
+                subject.next({
+                    power: undefined,
+                    speed: undefined, 
+                    hr: undefined,
+                })
+            }
         } catch (e) {
             console.error(e)
         }
