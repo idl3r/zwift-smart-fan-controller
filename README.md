@@ -26,7 +26,8 @@ To configure command use a JSON config file.
   },
   "zwiftConfig": {
     "zwiftID": 1231421,
-    "pollingInterval": 2500
+    "pollingInterval": 2500, 
+    "smoothCycles": 1
   },
   "thresholds": {
     "power": {

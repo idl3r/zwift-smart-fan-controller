@@ -91,7 +91,8 @@ Create a JSON configuration file like so:
   },
   "zwiftConfig": {
     "zwiftID": 1231421,
-    "pullingInterval": 2500
+    "pollingInterval": 2500, 
+    "smoothCycles": 1
   },
   "thresholds": {
     "power": {
