@@ -8,6 +8,10 @@ const SmartFan = require('../device-controller/smart-fan/smart-fan');
 const yargs = require("yargs");
 const {hideBin} = require("yargs/helpers");
 
+var smoothVals = [];
+var smoothValsIdx = 0;
+var smoothCycles = 1;
+
 const options = yargs(hideBin(process.argv))
     .option('config', {
         type: 'string',
@@ -29,13 +33,30 @@ function getDataSource(config) {
 }
 
 function getLevel(value, thresholds) {
-    if (value >= thresholds.level3) {
+    var avgValue = 0;
+
+    if (value === undefined) {
+        // Fill smoothVals with 0
+        smoothVals.fill(0);
+        return 0;
+    }
+
+    smoothVals[smoothValsIdx] = value;
+    smoothValsIdx = (smoothValsIdx + 1) % smoothCycles;
+    let sum = smoothVals.reduce((accumulator, current) => accumulator + current, 0);
+    avgValue = Math.round(sum / smoothCycles);
+    
+    // Turn on logging if needed
+    // console.log(smoothVals);
+    console.log(`Smoothed value: ${avgValue}`);
+
+    if (avgValue >= thresholds.level3) {
         return 3
     }
-    if (value >= thresholds.level2) {
+    if (avgValue >= thresholds.level2) {
         return 2
     }
-    if (value >= thresholds.level1) {
+    if (avgValue >= thresholds.level1) {
         return 1
     }
     return 0;
@@ -45,6 +66,9 @@ if (fs.existsSync(options.config)) {
     const config = JSON.parse(fs.readFileSync(options.config).toString());
     const dataProvider = getDataSource(config);
     const smartFan = SmartFan({fanIP: config.fanIP});
+
+    smoothCycles = config.zwiftConfig.smoothCycles;
+    smoothVals.fill(0);
 
     switch (config.observedData) {
         case "power":
