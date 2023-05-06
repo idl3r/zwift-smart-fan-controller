@@ -35,16 +35,21 @@ module.exports = function ({fanIP}) {
     }
 
     async function fanLevel(level) {
-        console.log("🌡 Fan Level: ", level)
-        switch (level) {
-            case 0:
-                return await Promise.all([off(0), off(1), off(2)]);
-            case 1:
-                return await Promise.all([on(0), off(1), off(2)]);
-            case 2:
-                return await Promise.all([off(0), on(1), off(2)]);
-            case 3:
-                return await Promise.all([off(0), off(1), on(2)]);
+        console.log(new Date().toISOString(), " 🌡 Fan Level: ", level)
+
+        try {
+            switch (level) {
+                case 0:
+                    return await Promise.all([off(0), off(1), off(2)]);
+                case 1:
+                    return await Promise.all([on(0), off(1), off(2)]);
+                case 2:
+                    return await Promise.all([off(0), on(1), off(2)]);
+                case 3:
+                    return await Promise.all([off(0), off(1), on(2)]);
+            }
+        } catch(e) {
+            console.log(e);
         }
     }
 
