@@ -58,6 +58,7 @@ To configure command use a JSON config file.
 - `zwiftConfig`: Specific configuration for `zwift` data provider
   - `zwiftID`: Your zwift ID, more detail in the [Get Zwift ID](#get-zwift-id) Section
   - `pollingInterval`: Pulling interval in milliseconds, (keep a value not too high)
+  - `smoothCycles`: fan control will take the average of data from recent several polling cycles to determine the fan level. Set to 1 for instant fan level switching.
 
 
 # Installation

@@ -120,6 +120,7 @@ Replace the
 - `observedData` choose from `power`, `speed`, `hr` depending on your preference and adjust the corresponding `thresholds`
 - `zwiftID`: Your Zwift ID
 - `pollingInterval` Adjust the polling interval (in ms). Keep a high value to not experience too frequent speed changes.
+- `smoothCycles` fan control will take the average of data from recent several polling cycles to determine the fan level. Set to 1 for instant fan level switching.
 
 To run the program use the command
 
