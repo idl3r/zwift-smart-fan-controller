@@ -12,6 +12,12 @@ var smoothVals = [];
 var smoothValsIdx = 0;
 var smoothCycles = 1;
 
+var cycleCount = 0;
+var lastFanChange = Number.MAX_SAFE_INTEGER;
+var lastFanLevel = 0;
+var delayFanUp = 1;
+var delayFanDown = 1;
+
 const options = yargs(hideBin(process.argv))
     .option('config', {
         type: 'string',
@@ -50,16 +56,45 @@ function getLevel(value, thresholds) {
     // console.log(smoothVals);
     console.log(`Smoothed value: ${avgValue}`);
 
+    var newFanLevel = 0;
+
     if (avgValue >= thresholds.level3) {
-        return 3
+        newFanLevel = 3;
     }
-    if (avgValue >= thresholds.level2) {
-        return 2
+    else if (avgValue >= thresholds.level2) {
+        newFanLevel = 2;
     }
-    if (avgValue >= thresholds.level1) {
-        return 1
+    else if (avgValue >= thresholds.level1) {
+        newFanLevel = 1;
     }
-    return 0;
+    console.log(`New fan level = ${newFanLevel}`);
+    
+    lastFanChange++;
+    if (newFanLevel == lastFanLevel) {
+        return newFanLevel;
+    }
+    else if (newFanLevel > lastFanLevel) {
+        if (lastFanChange >= delayFanUp) {
+            lastFanChange = 0;
+            lastFanLevel = newFanLevel;
+            return newFanLevel;
+        }
+        else {
+            console.log("! Ignore fan up");
+            return lastFanLevel;
+        }
+    }
+    else if (newFanLevel < lastFanLevel) {
+        if (lastFanChange >= delayFanDown) {
+            lastFanChange = 0;
+            lastFanLevel = newFanLevel;
+            return newFanLevel;
+        }
+        else {
+            console.log("! Ignore fan down");
+            return lastFanLevel;
+        }
+    }
 }
 
 if (fs.existsSync(options.config)) {
@@ -69,6 +104,8 @@ if (fs.existsSync(options.config)) {
 
     smoothCycles = config.zwiftConfig.smoothCycles;
     smoothVals.fill(0);
+    delayFanUp = config.zwiftConfig.delayFanUp;
+    delayFanDown = config.zwiftConfig.delayFanUp;
 
     switch (config.observedData) {
         case "power":

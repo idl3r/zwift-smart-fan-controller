@@ -27,7 +27,9 @@ To configure command use a JSON config file.
   "zwiftConfig": {
     "zwiftID": 1231421,
     "pollingInterval": 2500, 
-    "smoothCycles": 1
+    "smoothCycles": 1,
+    "delayFanUp": 1,
+    "delayFanDown": 1
   },
   "thresholds": {
     "power": {
@@ -59,6 +61,8 @@ To configure command use a JSON config file.
   - `zwiftID`: Your zwift ID, more detail in the [Get Zwift ID](#get-zwift-id) Section
   - `pollingInterval`: Pulling interval in milliseconds, (keep a value not too high)
   - `smoothCycles`: fan control will take the average of data from recent several polling cycles to determine the fan level. Set to 1 for instant fan level switching.
+  - `delayFanUp`: delay several cycles before turning the fan level up. Set this value above 1 if you don't want the fan to respond to short sprint efforts.
+  - `delayFanDown`: delay several cycles before turning the fan level down. Set this value above 1 if you don't want the fan to respond to brief recovery.
 
 
 # Installation

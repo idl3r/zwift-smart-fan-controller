@@ -8,7 +8,9 @@
   "zwiftConfig": {
     "zwiftID": 1231421,
     "pollingInterval": 2500, 
-    "smoothCycles": 1
+    "smoothCycles": 1,
+    "delayFanUp": 1,
+    "delayFanDown": 1
   },
   "thresholds": {
     "power": {
