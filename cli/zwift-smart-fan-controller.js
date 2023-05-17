@@ -12,9 +12,9 @@ var smoothVals = [];
 var smoothValsIdx = 0;
 var smoothCycles = 1;
 
-var cycleCount = 0;
-var lastFanChange = Number.MAX_SAFE_INTEGER;
-var lastFanLevel = 0;
+var fanUpCycles = 0;
+var fanDownCycles = 0;
+var currFanLevel = 0;
 var delayFanUp = 1;
 var delayFanDown = 1;
 
@@ -32,7 +32,7 @@ function getDataSource(config) {
         case "zwift":
             return new Zwift({zwiftID: config.zwiftConfig.zwiftID, pollingInterval: config.zwiftConfig.pollingInterval})
         case "mock":
-            return new Mock({pollingInterval: 5000})
+            return new Mock({pollingInterval: config.zwiftConfig.pollingInterval})
         default:
             throw new Error('Unsupported data provider:  ' + config.dataProvider);
     }
@@ -69,32 +69,34 @@ function getLevel(value, thresholds) {
     }
     console.log(`New fan level = ${newFanLevel}`);
     
-    lastFanChange++;
-    if (newFanLevel == lastFanLevel) {
-        return newFanLevel;
+    if (newFanLevel == currFanLevel) {
+        fanUpCycles = 0;
+        fanDownCycles = 0;
     }
-    else if (newFanLevel > lastFanLevel) {
-        if (lastFanChange >= delayFanUp) {
-            lastFanChange = 0;
-            lastFanLevel = newFanLevel;
-            return newFanLevel;
+    else if (newFanLevel > currFanLevel) {
+        fanUpCycles++;
+        if (fanUpCycles >= delayFanUp) {
+            fanUpCycles = 0;
+            fanDownCycles = 0;
+            currFanLevel = newFanLevel;
         }
         else {
             console.log("! Ignore fan up");
-            return lastFanLevel;
         }
     }
-    else if (newFanLevel < lastFanLevel) {
-        if (lastFanChange >= delayFanDown) {
-            lastFanChange = 0;
-            lastFanLevel = newFanLevel;
-            return newFanLevel;
+    else if (newFanLevel < currFanLevel) {
+        fanDownCycles++;
+        if (fanDownCycles >= delayFanDown) {
+            fanDownCycles = 0;
+            fanUpCycles = 0;
+            currFanLevel = newFanLevel;
         }
         else {
             console.log("! Ignore fan down");
-            return lastFanLevel;
         }
     }
+    
+    return currFanLevel;
 }
 
 if (fs.existsSync(options.config)) {
@@ -105,7 +107,7 @@ if (fs.existsSync(options.config)) {
     smoothCycles = config.zwiftConfig.smoothCycles;
     smoothVals.fill(0);
     delayFanUp = config.zwiftConfig.delayFanUp;
-    delayFanDown = config.zwiftConfig.delayFanUp;
+    delayFanDown = config.zwiftConfig.delayFanDown;
 
     switch (config.observedData) {
         case "power":
