@@ -2,6 +2,7 @@
   "fanIP": "192.168.1.41",
   "dataProvider": "zwift",
   "observedData": "power",
+  "undefFanLvl": 0,
   "antConfig": {
     "wheelCircumference": 2.120
   },

@@ -17,6 +17,7 @@ var fanDownCycles = 0;
 var currFanLevel = 0;
 var delayFanUp = 1;
 var delayFanDown = 1;
+var undefFanLvl = 0;
 
 const options = yargs(hideBin(process.argv))
     .option('config', {
@@ -44,7 +45,7 @@ function getLevel(value, thresholds) {
     if (value === undefined) {
         // Fill smoothVals with 0
         smoothVals.fill(0);
-        return 0;
+        return undefFanLvl;
     }
 
     smoothVals[smoothValsIdx] = value;
@@ -108,6 +109,7 @@ if (fs.existsSync(options.config)) {
     smoothVals.fill(0);
     delayFanUp = config.zwiftConfig.delayFanUp;
     delayFanDown = config.zwiftConfig.delayFanDown;
+    undefFanLvl = config.undefFanLvl;
 
     switch (config.observedData) {
         case "power":
@@ -121,7 +123,13 @@ if (fs.existsSync(options.config)) {
             break;
     }
 
-    process.on('exit', () => {
-        smartFan.fanLevel(0)
+    ['exit', 'SIGINT', 'uncaughtException'].forEach(function (sig) {
+        process.on(sig, function () {
+            let fanStat = smartFan.fanLevel(0);
+            fanStat.then(function(result) {
+                console.log("Exit reason:" + sig);
+                process.exit(0);
+            });        
+        });
     });
 }

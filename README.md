@@ -54,6 +54,7 @@ To configure command use a JSON config file.
 - `fanIP`: IP or hostname of the fan
 - `dataProvider`: `zwift`, `ant`, `mock` select data provider for the `observedData`
 - `observedData`: `power`, `speed`, `hr` select data thresholds that trigger fan level change
+- `undefFanLvl`: Fan level when data provider returns undefined
 
 - `antConfig`: Specific configuration for `ant` data provider
   - `wheelCircumference`: size of the wheel in meters - [Size chart](https://www.bikecalc.com/wheel_size_math#:~:text=Wheel%20diameter%20%3D%20(rim%20diameter),circumference%20%3D%20Wheel%20diameter%20*%20PI.)
