@@ -2,14 +2,16 @@ const {interval, map} = require("rxjs");
 const configExample = require("../../config-example.json");
 
 function getThresholds(index, thresholds) {
+    index = Math.floor(Math.random() * 3);
+    ratio = 1 + ((Math.random() - 0.5) * 0.4);
+    if (index % 3 === 2) {
+        return Math.floor(thresholds.level3 * ratio);
+    }
+    if (index % 3 === 1) {
+        return Math.floor(thresholds.level2 * ratio);
+    }
     if (index % 3 === 0) {
-        return thresholds.level3
-    }
-    if (index % 2 === 0) {
-        return thresholds.level2
-    }
-    if (index % 1 === 0) {
-        return thresholds.level1
+        return Math.floor(thresholds.level1 * ratio);
     }
 }
 module.exports = function ({pollingInterval}) {
