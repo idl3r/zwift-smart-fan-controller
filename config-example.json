@@ -3,15 +3,19 @@
   "dataProvider": "zwift",
   "observedData": "power",
   "undefFanLvl": 0,
+  "smoothCycles": 1,
+  "delayFanUp": 1,
+  "delayFanDown": 1,
   "antConfig": {
     "wheelCircumference": 2.120
   },
   "zwiftConfig": {
     "zwiftID": 1231421,
-    "pollingInterval": 2500, 
-    "smoothCycles": 1,
-    "delayFanUp": 1,
-    "delayFanDown": 1
+    "pollingInterval": 2500
+  },
+  "sauce4zwiftConfig": {
+    "apiUrl": "http://127.0.0.1:1080",
+    "pollingInterval": 1000
   },
   "thresholds": {
     "power": {

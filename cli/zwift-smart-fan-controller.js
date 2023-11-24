@@ -7,6 +7,7 @@ const Mock = require('../data-provider/mock/mock');
 const SmartFan = require('../device-controller/smart-fan/smart-fan');
 const yargs = require("yargs");
 const {hideBin} = require("yargs/helpers");
+const Sauce4zwift = require('../data-provider/sauce4zwift/sauce4zwift');
 
 var smoothVals = [];
 var smoothValsIdx = 0;
@@ -29,11 +30,13 @@ const options = yargs(hideBin(process.argv))
 function getDataSource(config) {
     switch (config.dataProvider) {
         case "ant":
-            return  new Ant({wheelCircumference: config.antConfig.wheelCircumference});
+            return new Ant({wheelCircumference: config.antConfig.wheelCircumference});
         case "zwift":
-            return new Zwift({zwiftID: config.zwiftConfig.zwiftID, pollingInterval: config.zwiftConfig.pollingInterval})
+            return new Zwift({zwiftID: config.zwiftConfig.zwiftID, pollingInterval: config.zwiftConfig.pollingInterval});
+        case "sauce4zwift":
+            return new Sauce4zwift({apiUrl: config.sauce4zwiftConfig.apiUrl, pollingInterval: config.sauce4zwiftConfig.pollingInterval});
         case "mock":
-            return new Mock({pollingInterval: config.zwiftConfig.pollingInterval})
+            return new Mock({pollingInterval: config.zwiftConfig.pollingInterval});
         default:
             throw new Error('Unsupported data provider:  ' + config.dataProvider);
     }
@@ -105,10 +108,10 @@ if (fs.existsSync(options.config)) {
     const dataProvider = getDataSource(config);
     const smartFan = SmartFan({fanIP: config.fanIP});
 
-    smoothCycles = config.zwiftConfig.smoothCycles;
+    smoothCycles = config.smoothCycles;
     smoothVals.fill(0);
-    delayFanUp = config.zwiftConfig.delayFanUp;
-    delayFanDown = config.zwiftConfig.delayFanDown;
+    delayFanUp = config.delayFanUp;
+    delayFanDown = config.delayFanDown;
     undefFanLvl = config.undefFanLvl;
 
     switch (config.observedData) {
