@@ -18,24 +18,29 @@ To configure command use a JSON config file.
 
 ```json
 {
-  "fanIP": "192.168.1.127",
+  "fanIP": "192.168.1.41",
   "dataProvider": "zwift",
   "observedData": "power",
+  "undefFanLvl": 0,
+  "smoothCycles": 1,
+  "delayFanUp": 1,
+  "delayFanDown": 1,
   "antConfig": {
     "wheelCircumference": 2.120
   },
   "zwiftConfig": {
     "zwiftID": 1231421,
-    "pollingInterval": 2500, 
-    "smoothCycles": 1,
-    "delayFanUp": 1,
-    "delayFanDown": 1
+    "pollingInterval": 2500
+  },
+  "sauce4zwiftConfig": {
+    "apiUrl": "http://127.0.0.1:1080",
+    "pollingInterval": 1000
   },
   "thresholds": {
     "power": {
       "level1": 0,
-      "level2": 10,
-      "level3": 20
+      "level2": 160,
+      "level3": 280
     },
     "speed": {
       "level1": 0,
@@ -55,16 +60,20 @@ To configure command use a JSON config file.
 - `dataProvider`: `zwift`, `ant`, `mock` select data provider for the `observedData`
 - `observedData`: `power`, `speed`, `hr` select data thresholds that trigger fan level change
 - `undefFanLvl`: Fan level when data provider returns undefined
+- `smoothCycles`: fan control will take the average of data from recent several polling cycles to determine the fan level. Set to 1 for instant fan level switching.
+- `delayFanUp`: delay several cycles before turning the fan level up. Set this value above 1 if you don't want the fan to respond to short sprint efforts.
+- `delayFanDown`: delay several cycles before turning the fan level down. Set this value above 1 if you don't want the fan to respond to brief recovery.
 
 - `antConfig`: Specific configuration for `ant` data provider
   - `wheelCircumference`: size of the wheel in meters - [Size chart](https://www.bikecalc.com/wheel_size_math#:~:text=Wheel%20diameter%20%3D%20(rim%20diameter),circumference%20%3D%20Wheel%20diameter%20*%20PI.)
+
 - `zwiftConfig`: Specific configuration for `zwift` data provider
   - `zwiftID`: Your zwift ID, more detail in the [Get Zwift ID](#get-zwift-id) Section
   - `pollingInterval`: Pulling interval in milliseconds, (keep a value not too high)
-  - `smoothCycles`: fan control will take the average of data from recent several polling cycles to determine the fan level. Set to 1 for instant fan level switching.
-  - `delayFanUp`: delay several cycles before turning the fan level up. Set this value above 1 if you don't want the fan to respond to short sprint efforts.
-  - `delayFanDown`: delay several cycles before turning the fan level down. Set this value above 1 if you don't want the fan to respond to brief recovery.
 
+- `sauce4zwiftConfig`: Specific configuration for `sauce4zwift` data provider
+  - `apiUrl`: Url of your Sauce4Zwift web server, typically http://<your_local_network_ip>:1080.
+  - `pollingInterval`: Pulling interval in milliseconds
 
 # Installation
 
