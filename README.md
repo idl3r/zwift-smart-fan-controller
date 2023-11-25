@@ -1,6 +1,7 @@
 # Zwift Smart Fan Controller
 
 <!-- command-documentation -->
+
 ```
 > zwift-smart-fan-controller --help
 
@@ -8,8 +9,9 @@ Options:
   --help     Show help                                                 [boolean]
   --version  Show version number                                       [boolean]
   --config   path to JSON config file                                   [string]
- 
+
 ```
+
 <!-- end-command-documentation -->
 
 # Config
@@ -26,7 +28,7 @@ To configure command use a JSON config file.
   "delayFanUp": 1,
   "delayFanDown": 1,
   "antConfig": {
-    "wheelCircumference": 2.120
+    "wheelCircumference": 2.12
   },
   "zwiftConfig": {
     "zwiftID": 1231421,
@@ -65,9 +67,11 @@ To configure command use a JSON config file.
 - `delayFanDown`: delay several cycles before turning the fan level down. Set this value above 1 if you don't want the fan to respond to brief recovery.
 
 - `antConfig`: Specific configuration for `ant` data provider
-  - `wheelCircumference`: size of the wheel in meters - [Size chart](https://www.bikecalc.com/wheel_size_math#:~:text=Wheel%20diameter%20%3D%20(rim%20diameter),circumference%20%3D%20Wheel%20diameter%20*%20PI.)
+
+  - `wheelCircumference`: size of the wheel in meters - [Size chart](<https://www.bikecalc.com/wheel_size_math#:~:text=Wheel%20diameter%20%3D%20(rim%20diameter),circumference%20%3D%20Wheel%20diameter%20*%20PI.>)
 
 - `zwiftConfig`: Specific configuration for `zwift` data provider
+
   - `zwiftID`: Your zwift ID, more detail in the [Get Zwift ID](#get-zwift-id) Section
   - `pollingInterval`: Pulling interval in milliseconds, (keep a value not too high)
 
@@ -78,10 +82,9 @@ To configure command use a JSON config file.
 # Installation
 
 ```bash
-npm install -g git+ssh://git@github.com:florianpasteur/zwift-smart-fan-controller.git
+npm install -g git+ssh://git@github.com:idl3r/zwift-smart-fan-controller.git
 ```
 
-
 <a name="get-zwift-id"></a>
-# Get Zwift ID
 
+# Get Zwift ID

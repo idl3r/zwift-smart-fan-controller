@@ -10,7 +10,7 @@
   },
   "repository": {
     "type": "git",
-    "url": "git@github.com:florianpasteur/zwift-smart-fan-controller.git"
+    "url": "git@github.com:idl3r/zwift-smart-fan-controller.git"
   },
   "keywords": [
     "Zwift",
@@ -19,7 +19,7 @@
     "Ant+",
     "DIY"
   ],
-  "author": "Florian P.",
+  "author": "Florian P., idl3r",
   "license": "MIT",
   "devDependencies": {
     "husky": "^8.0.1"
